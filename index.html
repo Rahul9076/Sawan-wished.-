@@ -1,207 +1,358 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sawan ki Shubhkamnaye</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Yatra+One&display=swap" rel="stylesheet">
-    
+    <title>All in One Tools</title>
     <style>
-        /* CSS स्टाइलिंग */
+        /* --- Global Styles & Fonts --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        :root {
+            --page-bg: #FFFFFF;
+            --phone-body-bg: #1C1C1C;
+            --header-bg: #;
+            --content-bg: #F0F2F5; /* Lighter background for content area */
+            --text-dark: #212121;
+            --text-light: #FFFFFF;
+            --text-secondary: #5F6368;
+            --icon-wrapper-bg: #FFFFFF;
+            ---color: rgba(0, 0, 0, 0.08); /* Softer shadow */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            margin: 0; padding: 20px; padding-bottom: 80px; /* विज्ञापन के लिए नीचे जगह छोड़ी */
-            font-family: 'Tiro Devanagari Hindi', serif;
-            background: linear-gradient(to top, #020024, #090979, #00d4ff);
-            color: #ffffff; text-align: center; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; min-height: 100vh; overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--page-bg);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
         }
-        #fireworks-canvas {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+
+        /* --- Main Page Container --- */
+        .page-container {
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
         }
-        .container {
-            position: relative; z-index: 1; background-color: rgba(0, 0, 0, 0.4);
-            padding: 25px; border-radius: 20px;
-            box-shadow: 0 0 25px rgba(0, 212, 255, 0.6), 0 0 10px rgba(255, 255, 255, 0.5) inset;
-            backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
-            border: 2px solid rgba(173, 216, 230, 0.7);
-            max-width: 500px; width: 90%;
+
+        .main-heading {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 5px;
         }
-        #om-image {
-            max-width: 60%; height: auto; margin-bottom: 15px;
-            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.8));
+
+        .sub-heading {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
         }
-        #stylish-greeting {
-            font-family: 'Yatra One', cursive; font-size: 1.6em;
-            margin: 20px 0; line-height: 1.4;
-            background: linear-gradient(45deg, #FFD700, #FFBF00);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
-            border-right: 2px solid rgba(255, 215, 0, 0.75);
-            white-space: pre-wrap; animation: blink-caret .75s step-end infinite;
+
+        /* --- Phone Mockup --- */
+        .phone-mockup {
+            width: 100%;
+            max-width: 390px;
+            height: 844px;
+            background-color: var(--phone-body-bg);
+            border-radius: 50px;
+            padding: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+            margin: 0 auto;
         }
-        @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: rgba(255, 215, 0, 0.75); }
+
+        .phone-screen {
+            background-color: var(--header-bg); /* Dark background for the top part */
+            height: 100%;
+            border-radius: 38px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
         }
-        #greetingMessage {
-            display: none; font-size: 2em; font-weight: bold; margin-bottom: 20px;
-            animation: glow 2s ease-in-out infinite alternate;
-            background: linear-gradient(45deg, #ffffff, #add8e6);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+        
+        /* --- Header Area --- */
+        .app-header-content {
+            padding: 20px 20px 0 20px;
+            color: var(--text-light);
+            position: relative;
+            z-index: 10;
         }
-        h2 { font-size: 1.8em; margin-bottom: 15px; color: #00d4ff; }
-        .input-group { margin-top: 20px; }
-        #nameInput {
-            width: 80%; padding: 12px; border-radius: 8px; border: 1px solid #00d4ff;
-            background-color: rgba(255,255,255,0.1); color: white; font-size: 1em;
-            margin-bottom: 15px; font-family: 'Tiro Devanagari Hindi', serif;
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
         }
-        #nameInput::placeholder { color: #ccc; }
-        #generateLinkBtn {
-            padding: 10px 20px; font-size: 1.1em; font-weight: bold; color: white;
-            background: linear-gradient(45deg, #25D366, #128C7E);
-            border: none; border-radius: 8px; cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            font-family: 'Tiro Devanagari Hindi', serif;
-            box-shadow: 0 0 15px rgba(37, 211, 102, 0.6);
-            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+
+        .logo-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        #generateLinkBtn:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(37, 211, 102, 0.9); }
-        #generateLinkBtn svg { width: 24px; height: 24px; fill: white; }
-        #linkResult { display: none; margin-top: 20px; }
-        #generatedLink {
-            width: 90%; padding: 10px; border-radius: 5px; border: 1px solid #00d4ff;
-            background-color: #333; color: #fff; font-size: 0.9em;
-            text-align: center; margin-top: 10px;
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #E74C3C;
+            font-family: 'Poppins', sans-serif;
         }
-        @keyframes glow {
-            from { text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(0, 212, 255, 0.5); }
-            to { text-shadow: 0 0 20px rgba(255, 255, 255, 1), 0 0 30px rgba(0, 212, 255, 0.8); }
+
+        .app-title {
+            font-size: 20px;
+            font-weight: 600;
         }
-        #ad-container {
-            position: fixed; bottom: 0; left: 50%;
-            transform: translateX(-50%); width: 100%;
-            max-width: 468px; height: 60px;
-            z-index: 100; display: flex;
-            justify-content: center; align-items: center;
+        
+        .menu-dots {
+            font-size: 24px;
+            cursor: pointer;
+            letter-spacing: 2px;
+        }
+        
+        .welcome-text {
+            color: #BDC3C7;
+            font-size: 14px;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        #search-box {
+            width: 100%;
+            padding: 12px 20px 12px 20px;
+            border-radius: 12px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        #search-box::placeholder {
+            color: #BDC3C7;
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #BDC3C7;
+            font-size: 20px;
+        }
+
+        /* --- Tools Container with Curved Top --- */
+        .tools-area {
+            flex-grow: 1;
+            background-color: var(--content-bg);
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            margin-top: 20px; /* Space between search and content */
+            padding: 25px 20px 20px 20px;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .tools-area::-webkit-scrollbar {
+            width: 0; /* Hide scrollbar */
+        }
+
+        .tool-category {
+            margin-bottom: 25px;
+        }
+
+        .category-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .category-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+            display: inline-block;
+            position: relative;
+        }
+        
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px 15px; /* row-gap column-gap */
+        }
+
+        .tool-item {
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: transform 0.2s ease;
+        }
+        
+        .tool-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .tool-icon-wrapper {
+            width: 100%;
+            padding-top: 100%; /* Creates a square aspect ratio */
+            position: relative;
+            background-color: var(--icon-wrapper-bg);
+            border-radius: 18px;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            overflow: hidden;
+        }
+        
+        .tool-icon-wrapper img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            height: 60%;
+        }
+
+        .tool-name {
+            font-size: 12px;
+            font-weight: 500;
+            text-align: center;
+            color: var(--text-secondary);
+            line-height: 1.3;
+            height: 32px; /* For 2 lines of text */
+            overflow: hidden;
+        }
+        
+        #no-results {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-top: 50px;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
-    <canvas id="fireworks-canvas"></canvas>
 
-    <div class="container">
-        <h1 id="greetingMessage"></h1>
-        <img id="om-image" src="om.gif" alt="Glowing Om Animation">
-        <h3 id="stylish-greeting"></h3>
-        <h2>सावन की शुभकामनाएँ भेजें</h2>
-        <div class="input-group">
-            <p>अपना नाम लिखें और शुभकामनाएँ भेजें:</p>
-            <input type="text" id="nameInput" placeholder="यहाँ अपना नाम लिखें...">
-            <button id="generateLinkBtn">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.31 20.6C8.75 21.39 10.37 21.82 12.04 21.82C17.5 21.82 21.95 17.37 21.95 11.91C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.04 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.71 20.28 11.91C20.28 16.47 16.65 20.1 12.04 20.1C10.48 20.1 8.99 19.68 7.67 18.96L7.33 18.78L4.47 19.53L5.23 16.78L5.04 16.44C4.26 15.03 3.8 13.47 3.8 11.91C3.8 7.35 7.43 3.67 12.04 3.67M9.13 7.5C8.91 7.5 8.69 7.5 8.5 7.73C8.31 7.96 7.69 8.57 7.69 9.73C7.69 10.89 8.52 11.99 8.67 12.17C8.81 12.35 10.31 14.82 12.72 15.76C14.74 16.54 15.13 16.41 15.46 16.38C16.1 16.29 17.06 15.71 17.32 15.06C17.58 14.41 17.58 13.91 17.44 13.78C17.3 13.65 17.11 13.59 16.85 13.46C16.59 13.33 15.37 12.75 15.14 12.65C14.91 12.56 14.74 12.51 14.58 12.74C14.42 12.97 13.91 13.56 13.73 13.73C13.56 13.91 13.38 13.94 13.12 13.81C12.86 13.68 11.91 13.36 10.79 12.34C10.03 11.63 9.5 10.76 9.32 10.5C9.14 10.24 9.27 10.13 9.4 10C9.52 9.88 9.67 9.68 9.81 9.5C9.95 9.32 10 9.18 10.09 9C10.18 8.82 10.12 8.66 10.06 8.53C10 8.4 9.52 7.5 9.32 7.5Z"></path></svg>
-                WhatsApp पर शेयर करें
-            </button>
-        </div>
-        <div id="linkResult">
-            <h4>आपका ब्राउज़र ऑटो-शेयर सपोर्ट नहीं करता।<br>यह लिंक कॉपी करके शेयर करें:</h4>
-            <input type="text" id="generatedLink" readonly>
-            <p><small>इस बॉक्स में क्लिक करके लिंक को कॉपी करें।</small></p>
-        </div>
-    </div>
+    <div class="page-container">
+        <h1 class="main-heading">Its Just 20 MB</h1>
+        <p class="sub-heading">Also works Offline</p>
 
-    <div id="ad-container">
-        <script type="text/javascript">
-            atOptions = {
-                'key' : '5898d148eb354c23ae2ae3f5c4bf34f5',
-                'format' : 'iframe',
-                'height' : 60,
-                'width' : 468,
-                'params' : {}
-            };
-        </script>
-        <script type="text/javascript" src="//www.highperformanceformat.com/5898d148eb354c23ae2ae3f5c4bf34f5/invoke.js"></script>
+        <div class="phone-mockup">
+            <div class="phone-screen">
+                <div class="app-header-content">
+                    <div class="header-top">
+                        <div class="logo-title">
+                            <div class="logo">A</div>
+                            <h2 class="app-title">All tools</h2>
+                        </div>
+                        <div class="menu-dots">⋮</div>
+                    </div>
+                    <p class="welcome-text">Welcome to all tools,</p>
+                    <div class="search-container">
+                         <input type="text" id="search-box" placeholder="Search for tools..">
+                         <span class="search-icon">🔍</span>
+                    </div>
+                </div>
+
+                <main class="tools-area" id="tools-container">
+                    <!-- Tools will be dynamically inserted here by JavaScript -->
+                </main>
+            </div>
+        </div>
     </div>
 
     <script>
-        // --- Firewoks.js ---
-        function Fireworks(container, options){const self=this;options=options||{};self.canvas=container;self.ctx=self.canvas.getContext('2d');self.width=self.canvas.width=window.innerWidth;self.height=self.canvas.height=window.innerHeight;self.particles=[];self.fireworks=[];self.hue=options.hue||120;self.gravity=options.gravity||0.05;self.rand=(min,max)=>Math.random()*(max-min)+min;function Firework(sx,sy,tx,ty){this.x=sx;this.y=sy;this.sx=sx;this.sy=sy;this.tx=tx;this.ty=ty;this.distanceToTarget=Math.sqrt(Math.pow(tx-sx,2)+Math.pow(ty-sy,2));this.distanceTraveled=0;this.coordinates=[];this.coordinateCount=3;while(this.coordinateCount--){this.coordinates.push([this.x,this.y])}this.angle=Math.atan2(ty-sy,tx-sx);this.speed=2;this.acceleration=1.05;this.brightness=self.rand(50,70);this.targetRadius=1}Firework.prototype.update=function(index){this.coordinates.pop();this.coordinates.unshift([this.x,this.y]);this.speed*=this.acceleration;const vx=Math.cos(this.angle)*this.speed;const vy=Math.sin(this.angle)*this.speed;this.distanceTraveled=Math.sqrt(Math.pow(this.x-this.sx,2)+Math.pow(this.y-this.sy,2));if(this.distanceTraveled>=this.distanceToTarget){self.createParticles(this.tx,this.ty);self.fireworks.splice(index,1)}else{this.x+=vx;this.y+=vy}};Firework.prototype.draw=function(){self.ctx.beginPath();self.ctx.moveTo(this.coordinates[this.coordinates.length-1][0],this.coordinates[this.coordinates.length-1][1]);self.ctx.lineTo(this.x,this.y);self.ctx.strokeStyle=`hsl(${self.hue}, 100%, ${this.brightness}%)`;self.ctx.stroke()};function Particle(x,y){this.x=x;this.y=y;this.coordinates=[];this.coordinateCount=5;while(this.coordinateCount--){this.coordinates.push([this.x,this.y])}this.angle=self.rand(0,Math.PI*2);this.speed=self.rand(1,10);this.friction=0.95;this.gravity=self.gravity;this.hue=self.rand(self.hue-20,self.hue+20);this.brightness=self.rand(50,80);this.alpha=1;this.decay=self.rand(0.015,0.03)}Particle.prototype.update=function(index){this.coordinates.pop();this.coordinates.unshift([this.x,this.y]);this.speed*=this.friction;this.x+=Math.cos(this.angle)*this.speed;this.y+=Math.sin(this.angle)*this.speed+this.gravity;this.alpha-=this.decay;if(this.alpha<=this.decay){self.particles.splice(index,1)}};Particle.prototype.draw=function(){self.ctx.beginPath();self.ctx.moveTo(this.coordinates[this.coordinates.length-1][0],this.coordinates[this.coordinates.length-1][1]);self.ctx.lineTo(this.x,this.y);self.ctx.strokeStyle=`hsla(${this.hue}, 100%, ${this.brightness}%, ${this.alpha})`;self.ctx.stroke()};self.createParticles=(x,y)=>{let p=100;while(p--)self.particles.push(new Particle(x,y))};self.launch=()=>{if(self.fireworks.length<20){const sx=self.width/2,sy=self.height;const tx=self.rand(0,self.width),ty=self.rand(0,self.height/2);self.fireworks.push(new Firework(sx,sy,tx,ty))}}
-        self.loop=()=>{requestAnimationFrame(self.loop);self.hue+=0.5;self.ctx.globalCompositeOperation='destination-out';self.ctx.fillStyle='rgba(0, 0, 0, 0.5)';self.ctx.fillRect(0,0,self.width,self.height);self.ctx.globalCompositeOperation='lighter';let i=self.fireworks.length;while(i--){self.fireworks[i].draw();self.fireworks[i].update(i)}let j=self.particles.length;while(j--){self.particles[j].draw();self.particles[j].update(j)}};self.start=()=>{self.loop();setInterval(self.launch,250)}
-        window.addEventListener('resize',()=>{self.width=self.canvas.width=window.innerWidth;self.height=self.canvas.height=window.innerHeight})}
-
-        // --- आपकी वेबसाइट का मुख्य लॉजिक ---
         document.addEventListener('DOMContentLoaded', () => {
-            const fireworks = new Fireworks(document.getElementById('fireworks-canvas'));
-            fireworks.start();
+            // --- NEW, ACCURATE ICONS for "Extra Tools" page ---
+            const icons = {
+                emi: `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNMjAgMjVoNjB2NTBIOSIgc3Ryb2tlPSIjYjBiMGIwIiBzdHJva2Utd2lkdGg9IjQiIGZpbGw9IiNmYWZhZmEiIHJ4PSI4Ii8+PHBhdGggZD0iTTIwIDI1aDYwdjE1SDIweiIgZmlsbD0iI2U3NDkzYyIvPjxwYXRoIGQ9Ik0zMCAyMGgxMHYxMEgtMzB6TTYwIDIwaDEwdjEwSC02MHoiIGZpbGw9IiNiMGIwYjAiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjgwIiByPSIxMiIgZmlsbD0iIzI3YWU2MCIvPjx0ZXh0IHg9IjUwIiB5PSI4NSIgZmlsbD0iI2ZmZiIgZm9udC1zaXplPSIxNCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9ImJvbGQiPiQ8L3RleHQ+PC9zdmc+`,
+                billingSystem: `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNMjUgMTBoNTB2ODBIOSIgc3Ryb2tlPSIjYjBjNGUyIiBzdHJva2Utd2lkdGg9IjQiIGZpbGw9IiNmYWZhZmEiLz48cGF0aCBkPSJNMzUgMjVoMzBNMzUgNDBoMzBNMzUgNTVoMjAiIHN0cm9rZT0iIzk5OSIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxyZWN0IHg9IjM1IiB5PSI3MCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjEwIiByeD0iMyIgZmlsbD0iIzNjYmFmYSIvPjwvc3ZnPg==`,
+                daysCounter: `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNMjAgNzBoNjB2MTBIOSIgc3Ryb2tlPSIjZDk2NDM4IiBzdHJva2Utd2lkdGg9IjQiIGZpbGw9IiNlZDc4NDMiLz48cGF0aCBkPSJNMjUgNTBoNTB2MjBILTI1eiIgZmlsbD0iI2Y4ZDRjNiIvPjxwYXRoIGQ9Ik00MCAzMHYyMG0xMCAwVjMwbTEwIDBWMzBtMTAgMFYzMCIgc3Ryb2tlPSIjZjQ0MzM2IiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik00MCAzMGMxLTUgMi01IDMtNW04IDBjMS01IDItNSA0LTVtNyAwYzEtNSA0LTUgNC01bTEgMGMxLTUgNC01IDMtNSIgc3Ryb2tlPSIjZmJjMDJkIiBzdHJva2Utd2lkdGg9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==`,
+                unitConverter: `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNMjUgMjV2NTBoNTB2LTUwSC0yNXoiIGZpbGw9IiM0Y2FmNTAiLz48cGF0aCBkPSJNMjUgMjVoMjV2MjVILTI1eiIgZmlsbD0iI2Y0NDMzNiIvPjxwYXRoIGQ9Ik01MCA1MGgyNXYyNUgtNTB6IiBmaWxsPSIjMjE5NmYzIi8+PHBhdGggZD0iTTc1IDI1SDUwVjUwSDI1Vjc1aDI1VjUwSDc1VjI1eiIgZmlsbD0iI2ZmZWIzYiIvPjwvc3ZnPg==`,
+                stopwatch: `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjU1IiByPSI0MCIgZmlsbD0iI2ZmZjk5ZiIgc3Ryb2tlPSIjZmJjMDJkIiBzdHJva2Utd2lkdGg9IjYiLz48cGF0aCBkPSJNNDUgMTBoMTB2MTBILTQ1ek02NSA2bDEwIDEwTS0xMCAxMGwxMCAxMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTYsMTMpIiBmaWxsPSIjZmJjMDJkIi8+PHBhdGggZD0iTTUwIDI1djMwIiBzdHJva2U9IiMzMzMiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+`,
+                timer: `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNMzAgMjBoNDB2MTBILTMwek0zMCA3MGg0MHYxMEgtMzB6IiBmaWxsPSIjYmNiY2JjIi8+PHBhdGggZD0iTTcwIDIwTDcwIDMwbC00MC0xMFYyMHpNNzAgODB2LTEwbC00MCAxMFY4MHoiIGZpbGw9IiNkZGQiIHN0cm9rZT0iI2NjYyIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0iTTcwIDMwbC0yMCAyMGwyMC0yMGw4IDAgMC04ek0zMCA4MEw1MCA2MEwzMCA4MGwtOCAwbDAgOHoiIGZpbGw9IiMyMTk2ZjMiLz48cGF0aCBkPSJNNTAgNDB2MjAiIHN0cm9rZT0iIzIxOTZmMzQiIHN0cm9rZS13aWR0aD0iMyIvPjwvc3ZnPg==`,
+                numberCounter: `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB4PSIyMCIgeT0iMzAiIHdpZHRoPSI2MCIgaGVpZ2h0PSI0MCIgcng9IjUiIGZpbGw9IiMyMTIxMjEiLz48dGV4dCB4PSI1MCIgeT0iNjUiIGZpbGw9IiNlNTc0NzQiIGZvbnQtZmFtaWx5PSJtb25vc3BhY2UiIGZvbnQtc2l6ZT0iNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSJib2xkIj4yNDwvdGV4dD48L3N2Zz4=`,
+                random: `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNMjAgMzBoNDBjMTUgMCAxNSAxNSAxNSAzME04MCA3MGgtNDBjLTE1MCAwLTE1LTE1LTE1LTMwIiBzdHJva2U9IiNlOTEgYTciIHN0cm9rZS13aWR0aD0iOSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTgwIDMwbC0xNS0xNW0wIDMwbDE1IDE1TTIwIDcwbDE1IDE1bTAtMzBsLTE1LTE1IiBzdHJva2U9IiNlOTEgYTciIHN0cm9rZS13aWR0aD0iOSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+`,
+                generateQr: `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNMjAgMjBoMjB2MjBIOSIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjQiIGZpbGw9Im5vbmUiLz48cmVjdCB4PSIyNSIgeT0iMjUiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iIzMzMyIvPjxwYXRoIGQ9Ik02MCAyMGgyMHYyMEgtNjB6TTIwIDYwaDIwdjIwSC0yMHoiIHN0cm9rZT0iIzMzMyIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIi8+PHJlY3QgeD0iNjUiIHk9IjI1IiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiMzMzMiLz48cmVjdCB4PSIyNSIgeT0iNjUiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iIzMzMyIvPjxyZWN0IHg9IjYwIiB5PSI2MCIgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjMzMzIi8+PHJlY3QgeD0iNzUiIHk9IjY1IiB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjMzMzIi8+PHJlY3QgeD0iNjUiIHk9Ijc1IiB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjMzMzIi8+PC9zdmc+`,
+                morseCode: `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNMjAgMjBoNjBjNSAwIDEwIDUgMTAgMTB2MzBjMCA1IDUgMTAgLTEwIDEwaC01MGwtMTAgMTB2LTUwYzAtNSAzLTggOC04eiIgZmlsbD0iIzI2YzA4MiIvPjxjaXJjbGUgY3g9IjQwIiBjeT0iNTAiIHI9IjUiIGZpbGw9IiNmZmYiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjUwIiByPSI1IiBmaWxsPSIjZmZmIi8+PHJlY3QgeD0iNzIiIHk9IjQ1IiB3aWR0aD0iMTIiIGhlaWdodD0iMTAiIHJ4PSI0IiBmaWxsPSIjZmZmIi8+PC9zdmc+`,
+                bluetoothController: `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNMjAgNDBjLTIwIDAtMjAgMjUgMCAyNWgxNWM1IDAgNS0xMCAxMC0xMGgxMGMyIDAgNSAxMCAxMCAxMGgxNWMxNSAwIDE1LTI1IDAtMjVoLTE1Yy01IDAtNSAxMC0xMCAxMGgtMTBjLTIgMC01LTEwLTEwLTEweiIgZmlsbD0iIzM3MzczNyIvPjxwYXRoIGQ9Ik0zMCA0NXYxMG01LTVoMTBNNjUgNDBoMTBtLTUgNXYxMCIgc3Ryb2tlPSIjOGM4YzhjIiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTUiIHI9IjMiIGZpbGw9IiMyOTYyZmYiLz48L3N2Zz4=`,
+                fileLocker: `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB4PSIyMCIgeT0iMjAiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcng9IjUiIGZpbGw9IiMyNjMzMzgiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSIyMCIgc3Ryb2tlPSIjNTE1MTUxIiBzdHJva2Utd2lkdGg9IjYiIGZpbGw9Im5vbmUiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI1IiBmaWxsPSIjNTE1MTUxIi8+PHBhdGggZD0iTTUwIDUwaDE1IiBzdHJva2U9IiM1MTUxNTEiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+`,
+                calculator: `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB4PSIyNSIgeT0iMjAiIHdpZHRoPSI1MCIgaGVpZ2h0PSI2MCIgcng9IjUiIGZpbGw9IiM1NDY4ODgiLz48cmVjdCB4PSIzMiIgeT0iMjciIHdpZHRoPSIzNiIgaGVpZ2h0PSIxNSIgcng9IjMiIGZpbGw9IiM5ZWFhYmMiLz48cGF0aCBkPSJNMzUgNTB2MTBtNS01aDEwTTMzIDY4aDE0TTU1IDY4aDE0TTU1IDU1aDE0bS03LTd2MTRtLTcgN2gxNCIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==`,
+                deviceInfo: `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB4PSIzMCIgeT0iMTUiIHdpZHRoPSI0MCIgaGVpZ2h0PSI3MCIgcng9IjgiIGZpbGw9IiM3ODkwOTMiLz48cmVjdCB4PSIzNSIgeT0iMjAiIHdpZHRoPSIzMCIgaGVpZHT0IjYwIiByeD0iNCIgZmlsbD0iI2JjY2JjYyIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjUiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNTAgNDV2MjUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSI4IiBzdHJva2Utd2lkdGg9IjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==`,
+            };
             
-            // **यह स्टाइलिश टेक्स्ट का कोड है जिसे वापस जोड़ दिया गया है**
-            const typingText = "आपको और आपके पूरे परिवार को सावन मास की हार्दिक शुभकामनाएँ";
-            const typingElement = document.getElementById('stylish-greeting');
-            let i = 0;
-            function typeWriter() {
-                if (i < typingText.length) {
-                    typingElement.innerHTML += typingText.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, 100);
-                } else {
-                    typingElement.style.borderRight = 'none';
-                }
-            }
-            typeWriter();
+            const allTools = [
+                { name: "EMI", category: "Extra Tools", icon: icons.emi },
+                { name: "Billing System", category: "Extra Tools", icon: icons.billingSystem },
+                { name: "Days Counter", category: "Extra Tools", icon: icons.daysCounter },
+                { name: "Unit Converter", category: "Extra Tools", icon: icons.unitConverter },
+                { name: "Stopwatch", category: "Extra Tools", icon: icons.stopwatch },
+                { name: "Timer", category: "Extra Tools", icon: icons.timer },
+                { name: "Number Counter", category: "Extra Tools", icon: icons.numberCounter },
+                { name: "Random", category: "Extra Tools", icon: icons.random },
+                { name: "Generate Qr/ Bar code", category: "Extra Tools", icon: icons.generateQr },
+                { name: "Morse code", category: "Extra Tools", icon: icons.morseCode },
+                { name: "Bluetooth Controller", category: "Extra Tools", icon: icons.bluetoothController },
+                { name: "File locker", category: "Extra Tools", icon: icons.fileLocker },
+                { name: "Calculator", category: "Extra Tools", icon: icons.calculator },
+                { name: "Device Info", category: "Extra Tools", icon: icons.deviceInfo },
+            ];
+            
+            const toolsContainer = document.getElementById('tools-container');
+            const searchBox = document.getElementById('search-box');
 
-            const urlParams = new URLSearchParams(window.location.search);
-            const senderName = urlParams.get('name');
-            if (senderName) {
-                const greetingElement = document.getElementById('greetingMessage');
-                const decodedName = decodeURIComponent(senderName);
-                greetingElement.innerHTML = `<strong>${decodedName}</strong> की तरफ से`;
-                greetingElement.style.display = 'block';
-            }
-            const generateBtn = document.getElementById('generateLinkBtn');
-            const nameInput = document.getElementById('nameInput');
-            const linkResultDiv = document.getElementById('linkResult');
-            const generatedLinkInput = document.getElementById('generatedLink');
-            generateBtn.addEventListener('click', async () => {
-                const name = nameInput.value.trim();
-                if (name === '') { alert('कृपया अपना नाम डालें!'); return; }
-                const baseUrl = window.location.href.split('?')[0];
-                const encodedName = encodeURIComponent(name);
-                const newLink = `${baseUrl}?name=${encodedName}`;
-                if (navigator.share) {
-                    try {
-                        await navigator.share({
-                            title: 'सावन की शुभकामनाएँ',
-                            text: `मैंने आपके लिए एक विशेष सावन शुभकामना भेजी है! 🔱✨\n\nइसे खोलने के लिए नीचे दिए लिंक पर क्लिक करें 👇`,
-                            url: newLink
-                        });
-                    } catch (error) { console.log('शेयर नहीं किया गया:', error); }
-                } else {
-                    generatedLinkInput.value = newLink;
-                    linkResultDiv.style.display = 'block';
-                    generatedLinkInput.focus(); generatedLinkInput.select();
+            function renderTools(toolsToRender) {
+                toolsContainer.innerHTML = '';
+
+                if (toolsToRender.length === 0) {
+                    toolsContainer.innerHTML = `<p id="no-results">No tools found.</p>`;
+                    return;
                 }
+                
+                // Since we only have one category, we can simplify this
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'tool-category';
+                
+                categoryDiv.innerHTML = `
+                    <div class="category-header">
+                        <h3 class="category-title">Extra Tools</h3>
+                    </div>
+                    <div class="tool-grid"></div>`;
+                
+                const toolGrid = categoryDiv.querySelector('.tool-grid');
+                toolsToRender.forEach(tool => {
+                    const toolItem = document.createElement('a');
+                    toolItem.href = '#'; // Placeholder link
+                    toolItem.className = 'tool-item';
+                    toolItem.innerHTML = `
+                        <div class="tool-icon-wrapper">
+                            <img src="${tool.icon}" alt="${tool.name}">
+                        </div>
+                        <span class="tool-name">${tool.name}</span>`;
+                    toolGrid.appendChild(toolItem);
+                });
+
+                toolsContainer.appendChild(categoryDiv);
+            }
+
+            searchBox.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const filteredTools = allTools.filter(tool => 
+                    tool.name.toLowerCase().includes(searchTerm)
+                );
+                renderTools(filteredTools);
             });
-            generatedLinkInput.addEventListener('click', function() {
-                this.select(); this.setSelectionRange(0, 99999);
-            });
+
+            // Initial render
+            renderTools(allTools);
         });
     </script>
 </body>
 </html>
-
-
-
-
-<script type="text/javascript">
-	atOptions = {
-		'key' : '5898d148eb354c23ae2ae3f5c4bf34f5',
-		'format' : 'iframe',
-		'height' : 60,
-		'width' : 468,
-		'params' : {}
-	};
-</script>
-<script type="text/javascript" src="//www.highperformanceformat.com/5898d148eb354c23ae2ae3f5c4bf34f5/invoke.js"></script>
