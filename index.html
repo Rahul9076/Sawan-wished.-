@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sawan ki Shubhkamnaye</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Yatra+One&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS स्टाइलिंग */
+        body {
+            margin: 0; padding: 20px; padding-bottom: 80px; /* विज्ञापन के लिए नीचे जगह छोड़ी */
+            font-family: 'Tiro Devanagari Hindi', serif;
+            background: linear-gradient(to top, #020024, #090979, #00d4ff);
+            color: #ffffff; text-align: center; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; min-height: 100vh; overflow: hidden;
+        }
+        #fireworks-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        }
+        .container {
+            position: relative; z-index: 1; background-color: rgba(0, 0, 0, 0.4);
+            padding: 25px; border-radius: 20px;
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.6), 0 0 10px rgba(255, 255, 255, 0.5) inset;
+            backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+            border: 2px solid rgba(173, 216, 230, 0.7);
+            max-width: 500px; width: 90%;
+        }
+        #om-image {
+            max-width: 60%; height: auto; margin-bottom: 15px;
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.8));
+        }
+        #stylish-greeting {
+            font-family: 'Yatra One', cursive; font-size: 1.6em;
+            margin: 20px 0; line-height: 1.4;
+            background: linear-gradient(45deg, #FFD700, #FFBF00);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+            border-right: 2px solid rgba(255, 215, 0, 0.75);
+            white-space: pre-wrap; animation: blink-caret .75s step-end infinite;
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: rgba(255, 215, 0, 0.75); }
+        }
+        #greetingMessage {
+            display: none; font-size: 2em; font-weight: bold; margin-bottom: 20px;
+            animation: glow 2s ease-in-out infinite alternate;
+            background: linear-gradient(45deg, #ffffff, #add8e6);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+        }
+        h2 { font-size: 1.8em; margin-bottom: 15px; color: #00d4ff; }
+        .input-group { margin-top: 20px; }
+        #nameInput {
+            width: 80%; padding: 12px; border-radius: 8px; border: 1px solid #00d4ff;
+            background-color: rgba(255,255,255,0.1); color: white; font-size: 1em;
+            margin-bottom: 15px; font-family: 'Tiro Devanagari Hindi', serif;
+        }
+        #nameInput::placeholder { color: #ccc; }
+        #generateLinkBtn {
+            padding: 10px 20px; font-size: 1.1em; font-weight: bold; color: white;
+            background: linear-gradient(45deg, #25D366, #128C7E);
+            border: none; border-radius: 8px; cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Tiro Devanagari Hindi', serif;
+            box-shadow: 0 0 15px rgba(37, 211, 102, 0.6);
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        #generateLinkBtn:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(37, 211, 102, 0.9); }
+        #generateLinkBtn svg { width: 24px; height: 24px; fill: white; }
+        #linkResult { display: none; margin-top: 20px; }
+        #generatedLink {
+            width: 90%; padding: 10px; border-radius: 5px; border: 1px solid #00d4ff;
+            background-color: #333; color: #fff; font-size: 0.9em;
+            text-align: center; margin-top: 10px;
+        }
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(0, 212, 255, 0.5); }
+            to { text-shadow: 0 0 20px rgba(255, 255, 255, 1), 0 0 30px rgba(0, 212, 255, 0.8); }
+        }
+        #ad-container {
+            position: fixed; bottom: 0; left: 50%;
+            transform: translateX(-50%); width: 100%;
+            max-width: 468px; height: 60px;
+            z-index: 100; display: flex;
+            justify-content: center; align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="fireworks-canvas"></canvas>
+
+    <div class="container">
+        <h1 id="greetingMessage"></h1>
+        <img id="om-image" src="om.gif" alt="Glowing Om Animation">
+        <h3 id="stylish-greeting"></h3>
+        <h2>सावन की शुभकामनाएँ भेजें</h2>
+        <div class="input-group">
+            <p>अपना नाम लिखें और शुभकामनाएँ भेजें:</p>
+            <input type="text" id="nameInput" placeholder="यहाँ अपना नाम लिखें...">
+            <button id="generateLinkBtn">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.31 20.6C8.75 21.39 10.37 21.82 12.04 21.82C17.5 21.82 21.95 17.37 21.95 11.91C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.04 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.71 20.28 11.91C20.28 16.47 16.65 20.1 12.04 20.1C10.48 20.1 8.99 19.68 7.67 18.96L7.33 18.78L4.47 19.53L5.23 16.78L5.04 16.44C4.26 15.03 3.8 13.47 3.8 11.91C3.8 7.35 7.43 3.67 12.04 3.67M9.13 7.5C8.91 7.5 8.69 7.5 8.5 7.73C8.31 7.96 7.69 8.57 7.69 9.73C7.69 10.89 8.52 11.99 8.67 12.17C8.81 12.35 10.31 14.82 12.72 15.76C14.74 16.54 15.13 16.41 15.46 16.38C16.1 16.29 17.06 15.71 17.32 15.06C17.58 14.41 17.58 13.91 17.44 13.78C17.3 13.65 17.11 13.59 16.85 13.46C16.59 13.33 15.37 12.75 15.14 12.65C14.91 12.56 14.74 12.51 14.58 12.74C14.42 12.97 13.91 13.56 13.73 13.73C13.56 13.91 13.38 13.94 13.12 13.81C12.86 13.68 11.91 13.36 10.79 12.34C10.03 11.63 9.5 10.76 9.32 10.5C9.14 10.24 9.27 10.13 9.4 10C9.52 9.88 9.67 9.68 9.81 9.5C9.95 9.32 10 9.18 10.09 9C10.18 8.82 10.12 8.66 10.06 8.53C10 8.4 9.52 7.5 9.32 7.5Z"></path></svg>
+                WhatsApp पर शेयर करें
+            </button>
+        </div>
+        <div id="linkResult">
+            <h4>आपका ब्राउज़र ऑटो-शेयर सपोर्ट नहीं करता।<br>यह लिंक कॉपी करके शेयर करें:</h4>
+            <input type="text" id="generatedLink" readonly>
+            <p><small>इस बॉक्स में क्लिक करके लिंक को कॉपी करें।</small></p>
+        </div>
+    </div>
+
+    <div id="ad-container">
+        <script type="text/javascript">
+            atOptions = {
+                'key' : '5898d148eb354c23ae2ae3f5c4bf34f5',
+                'format' : 'iframe',
+                'height' : 60,
+                'width' : 468,
+                'params' : {}
+            };
+        </script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/5898d148eb354c23ae2ae3f5c4bf34f5/invoke.js"></script>
+    </div>
+
+    <script>
+        // --- Firewoks.js ---
+        function Fireworks(container, options){const self=this;options=options||{};self.canvas=container;self.ctx=self.canvas.getContext('2d');self.width=self.canvas.width=window.innerWidth;self.height=self.canvas.height=window.innerHeight;self.particles=[];self.fireworks=[];self.hue=options.hue||120;self.gravity=options.gravity||0.05;self.rand=(min,max)=>Math.random()*(max-min)+min;function Firework(sx,sy,tx,ty){this.x=sx;this.y=sy;this.sx=sx;this.sy=sy;this.tx=tx;this.ty=ty;this.distanceToTarget=Math.sqrt(Math.pow(tx-sx,2)+Math.pow(ty-sy,2));this.distanceTraveled=0;this.coordinates=[];this.coordinateCount=3;while(this.coordinateCount--){this.coordinates.push([this.x,this.y])}this.angle=Math.atan2(ty-sy,tx-sx);this.speed=2;this.acceleration=1.05;this.brightness=self.rand(50,70);this.targetRadius=1}Firework.prototype.update=function(index){this.coordinates.pop();this.coordinates.unshift([this.x,this.y]);this.speed*=this.acceleration;const vx=Math.cos(this.angle)*this.speed;const vy=Math.sin(this.angle)*this.speed;this.distanceTraveled=Math.sqrt(Math.pow(this.x-this.sx,2)+Math.pow(this.y-this.sy,2));if(this.distanceTraveled>=this.distanceToTarget){self.createParticles(this.tx,this.ty);self.fireworks.splice(index,1)}else{this.x+=vx;this.y+=vy}};Firework.prototype.draw=function(){self.ctx.beginPath();self.ctx.moveTo(this.coordinates[this.coordinates.length-1][0],this.coordinates[this.coordinates.length-1][1]);self.ctx.lineTo(this.x,this.y);self.ctx.strokeStyle=`hsl(${self.hue}, 100%, ${this.brightness}%)`;self.ctx.stroke()};function Particle(x,y){this.x=x;this.y=y;this.coordinates=[];this.coordinateCount=5;while(this.coordinateCount--){this.coordinates.push([this.x,this.y])}this.angle=self.rand(0,Math.PI*2);this.speed=self.rand(1,10);this.friction=0.95;this.gravity=self.gravity;this.hue=self.rand(self.hue-20,self.hue+20);this.brightness=self.rand(50,80);this.alpha=1;this.decay=self.rand(0.015,0.03)}Particle.prototype.update=function(index){this.coordinates.pop();this.coordinates.unshift([this.x,this.y]);this.speed*=this.friction;this.x+=Math.cos(this.angle)*this.speed;this.y+=Math.sin(this.angle)*this.speed+this.gravity;this.alpha-=this.decay;if(this.alpha<=this.decay){self.particles.splice(index,1)}};Particle.prototype.draw=function(){self.ctx.beginPath();self.ctx.moveTo(this.coordinates[this.coordinates.length-1][0],this.coordinates[this.coordinates.length-1][1]);self.ctx.lineTo(this.x,this.y);self.ctx.strokeStyle=`hsla(${this.hue}, 100%, ${this.brightness}%, ${this.alpha})`;self.ctx.stroke()};self.createParticles=(x,y)=>{let p=100;while(p--)self.particles.push(new Particle(x,y))};self.launch=()=>{if(self.fireworks.length<20){const sx=self.width/2,sy=self.height;const tx=self.rand(0,self.width),ty=self.rand(0,self.height/2);self.fireworks.push(new Firework(sx,sy,tx,ty))}}
+        self.loop=()=>{requestAnimationFrame(self.loop);self.hue+=0.5;self.ctx.globalCompositeOperation='destination-out';self.ctx.fillStyle='rgba(0, 0, 0, 0.5)';self.ctx.fillRect(0,0,self.width,self.height);self.ctx.globalCompositeOperation='lighter';let i=self.fireworks.length;while(i--){self.fireworks[i].draw();self.fireworks[i].update(i)}let j=self.particles.length;while(j--){self.particles[j].draw();self.particles[j].update(j)}};self.start=()=>{self.loop();setInterval(self.launch,250)}
+        window.addEventListener('resize',()=>{self.width=self.canvas.width=window.innerWidth;self.height=self.canvas.height=window.innerHeight})}
+
+        // --- आपकी वेबसाइट का मुख्य लॉजिक ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const fireworks = new Fireworks(document.getElementById('fireworks-canvas'));
+            fireworks.start();
+            
+            // **यह स्टाइलिश टेक्स्ट का कोड है जिसे वापस जोड़ दिया गया है**
+            const typingText = "आपको और आपके पूरे परिवार को सावन मास की हार्दिक शुभकामनाएँ";
+            const typingElement = document.getElementById('stylish-greeting');
+            let i = 0;
+            function typeWriter() {
+                if (i < typingText.length) {
+                    typingElement.innerHTML += typingText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 100);
+                } else {
+                    typingElement.style.borderRight = 'none';
+                }
+            }
+            typeWriter();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const senderName = urlParams.get('name');
+            if (senderName) {
+                const greetingElement = document.getElementById('greetingMessage');
+                const decodedName = decodeURIComponent(senderName);
+                greetingElement.innerHTML = `<strong>${decodedName}</strong> की तरफ से`;
+                greetingElement.style.display = 'block';
+            }
+            const generateBtn = document.getElementById('generateLinkBtn');
+            const nameInput = document.getElementById('nameInput');
+            const linkResultDiv = document.getElementById('linkResult');
+            const generatedLinkInput = document.getElementById('generatedLink');
+            generateBtn.addEventListener('click', async () => {
+                const name = nameInput.value.trim();
+                if (name === '') { alert('कृपया अपना नाम डालें!'); return; }
+                const baseUrl = window.location.href.split('?')[0];
+                const encodedName = encodeURIComponent(name);
+                const newLink = `${baseUrl}?name=${encodedName}`;
+                if (navigator.share) {
+                    try {
+                        await navigator.share({
+                            title: 'सावन की शुभकामनाएँ',
+                            text: `मैंने आपके लिए एक विशेष सावन शुभकामना भेजी है! 🔱✨\n\nइसे खोलने के लिए नीचे दिए लिंक पर क्लिक करें 👇`,
+                            url: newLink
+                        });
+                    } catch (error) { console.log('शेयर नहीं किया गया:', error); }
+                } else {
+                    generatedLinkInput.value = newLink;
+                    linkResultDiv.style.display = 'block';
+                    generatedLinkInput.focus(); generatedLinkInput.select();
+                }
+            });
+            generatedLinkInput.addEventListener('click', function() {
+                this.select(); this.setSelectionRange(0, 99999);
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+<script type="text/javascript">
+	atOptions = {
+		'key' : '5898d148eb354c23ae2ae3f5c4bf34f5',
+		'format' : 'iframe',
+		'height' : 60,
+		'width' : 468,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//www.highperformanceformat.com/5898d148eb354c23ae2ae3f5c4bf34f5/invoke.js"></script>
